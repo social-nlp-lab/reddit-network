@@ -130,3 +130,5 @@ dmypy.json
 .Rproj.user
 
 data/
+*.Rproj
+analysis_*/
