@@ -4,6 +4,7 @@
 
 library(tidyverse)
 library(jsonlite)
+library(igraph)
 
 dat_path <- "~/OneDrive - Drexel University/Social_NLP_Lab/Datasets/Reddit Drug Data- RAW - DNT/Central/data Dec 1st 2022/data 2018_1_1 to 2022_7_30_"
 subs <- c("opiates", "cocaine", "stims", "benzodiazepines")
@@ -24,9 +25,5 @@ posts <- subs |> map(\(x){
 }
 ) |> list_rbind()
 
-#########################
-# using reddit api to get active users
+# scatter plot between score and number of posts
 
-library(httr)
-
-x <- read_json("https://api.pushshift.io/reddit/search/comment?since=30d&subreddit=science&aggs=author&agg_size=500")

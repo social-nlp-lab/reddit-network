@@ -2,16 +2,12 @@
 title: "Analysis"
 format: html
 editor: visual
-knitr:
-  opts_chunk: 
-    collapse: true
 ---
 
 ## Exploratory Analysis
 
 ```{r}
 #| echo: false
-#| message: false
 source("./R/make-dat.R")
 library(igraph)
 ```
@@ -84,9 +80,11 @@ influencers <- influencers |>
   distinct()
 ```
 
-```{r, eval=FALSE}
+```{r}
 library(RedditExtractoR)
+```
 
+```{r}
 get_user_info <- function(userid){
   out <- tryCatch(
     {
@@ -109,17 +107,13 @@ get_user_info <- function(userid){
 ```
 
 ```{r}
-# networks <- influencers$name |>
-#   map(get_user_info) |>
-#   bind_rows()
+networks <- influencers$name |>
+  map(get_user_info) |>
+  bind_rows()
 ```
 
 ```{r}
-# write_rds(networks, "./data/influencer_subreddits.rds")
-```
-
-```{r}
-networks <- read_rds("./data/influencer_subreddits.rds")
+write_rds(networks, "./data/influencer_subreddits.rds")
 ```
 
 ## Networks
@@ -152,18 +146,7 @@ ggraph(sub_net, layout = "fr") +
 try interactive graph
 
 ```{r}
-#| fig-height: 18
-
 library(networkD3)
 
-networkD3::simpleNetwork(user_subs, zoom = TRUE)
-```
-
-```{r}
-# centrality measures
-
-igraph::degree(sub_net) |>
-  bind_rows() |>
-  pivot_longer(cols = everything(), names_to = "account", values_to = "degree") |>
-  arrange(desc(degree))
+networkD3::simpleNetwork(user_subs)
 ```
