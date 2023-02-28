@@ -130,3 +130,7 @@ dmypy.json
 .Rproj.user
 
 data/
+
+py/api-creds.py
+analysis_cache/
+analysis_files/
