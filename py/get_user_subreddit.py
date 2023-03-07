@@ -3,6 +3,8 @@ import praw
 import concurrent.futures
 import argparse
 import aiohttp
+import datetime
+import os
 
 file = 'py/api-creds.py'
 exec(open(file).read())
@@ -62,7 +64,12 @@ def parse_ids(user_ids, chunk_num):
             user_subreddits[user_id] = results[i]
 
         # Write the dictionary to a JSON file
-        path = f"data/user_subs/user_subreddits_{chunk_num}.json"
+        date = datetime.datetime.now().strftime("%Y-%m-%d")
+        # create directory if it doesn't exist
+        if not os.path.exists(f'data/user_subs/{date}'):
+            os.makedirs(f'data/user_subs/{date}')
+
+        path = f'data/user_subs/{date}/user_subreddits_{chunk_num}.json'
         with open(path, 'w') as f:
             json.dump(user_subreddits, f)
 
