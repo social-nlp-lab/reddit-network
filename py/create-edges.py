@@ -33,25 +33,29 @@ def find_druggsub(row):
     for sub in row:
         if sub in drug_subs:
             matches.append(sub)
-            return matches
-    return None
+    if len(matches) > 0:
+        return matches
+    else:
+        return None
+
 user_subs['from'] = user_subs['subreddit'].apply(find_druggsub)
 
 # nan values are users who only commented but did not post
-# get freq
-user_subs['from'].value_counts(dropna=False)
-# drop nan
-user_subs = user_subs.dropna()
+# drop rows where from in nan
+user_subs = user_subs.dropna(subset=['from'])
 # 8321 users and their subs
 
+# expand subreddit column and from column
+user_subs2 = user_subs.explode('subreddit')
+user_subs2 = user_subs2.explode('from')
 
+# drop rows where from == subreddit
+user_subs2 = user_subs2[user_subs2['from'] != user_subs2['subreddit']]
+# remove duplicates
+user_subs2 = user_subs2.drop_duplicates()
 
-# expand subreddit column
-user_subs = user_subs.explode('subreddit')
-# 325401 rows
-# take unique values
-user_subs = user_subs.drop_duplicates()
-#236,962 
-
+# get freq
+user_subs2['from'].value_counts(dropna=False)
+# 186,833 pairs
 # save to pickle
-user_subs.to_pickle('../data/subreddit_edges.pkl')
+user_subs2.to_pickle('../data/subreddit_edges.pkl')
