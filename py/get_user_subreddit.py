@@ -17,7 +17,7 @@ async def create_session():
         return session
     
 # read list of users 
-users = 'data/benzodiazepines_users.json'
+users = 'data/users_missing.json'
 with open(users) as f:
     user_names = json.load(f)
 
@@ -69,7 +69,7 @@ def parse_ids(user_ids, chunk_num):
         if not os.path.exists(f'data/user_subs/{date}'):
             os.makedirs(f'data/user_subs/{date}')
 
-        path = f'data/user_subs/{date}/user_subreddits_{chunk_num}_benzodiazepines.json'
+        path = f'data/user_subs/{date}/user_subreddits_{chunk_num}_missing.json'
         with open(path, 'w') as f:
             json.dump(user_subreddits, f)
 
